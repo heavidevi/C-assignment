@@ -81,6 +81,8 @@ void transaction() {
     printf("Do you want to make another transaction? (y/n): ");
     scanf(" %c", &choice);
 
+    
+
     if (tolower(choice) == 'y') {
         transaction();
     } else {
@@ -89,7 +91,10 @@ void transaction() {
 }
 
 int main() {
-    printf("Welcome to the Bank Fraud Detection System\n");
+    
     transaction();
     return 0;
 }
+
+
+
