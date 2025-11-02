@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// Global variables to store all books (defined only once)
+// Global variables to store all books 
 int isbns[100];
 char titles[100][50];
 float prices[100];
@@ -118,7 +118,7 @@ int main(){
 
         if(choice != 4) {
             printf("\nPress enter to continue...");
-            getchar(); getchar();
+            getchar(); 
         }
 
     } while(choice != 4);
