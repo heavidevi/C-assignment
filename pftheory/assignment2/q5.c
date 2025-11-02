@@ -15,9 +15,9 @@ void reverse(char str[], int size){
 }
 
 char* encode(char str[], int size){
-    // Step 1: Reverse the string first
+   
     reverse(str, size);
-    // Step 2: Then toggle bits
+    
     for(int i = 0; i < size; i++){
         str[i] = bittoggle(str[i]);
     }
@@ -26,11 +26,11 @@ char* encode(char str[], int size){
 }
 
 char* decode(char str[], int size){
-    // Step 1: First toggle bits back (undo bit toggling)
+    
     for(int i = 0; i < size; i++){
         str[i] = bittoggle(str[i]);
     }
-    // Step 2: Then reverse back to original order
+    
     reverse(str, size);
     str[size] = '\0';
     return str;
@@ -40,24 +40,23 @@ void clear_screen() {
     system("cls");
 }
 
-// Function to read full line with spaces
+
 void read_full_message(char message[]) {
     int i = 0;
     char ch;
     
-    // Skip any leftover newline from previous input
+
     while((ch = getchar()) == '\n' || ch == ' ') {
-        // Skip whitespace
+        
     }
     
-    // Put back the first non-whitespace character
+  
     if(ch != '\n' && ch != ' ') {
         message[i] = ch;
         i++;
     }
-    
-    // Read rest of the line
-    while((ch = getchar()) != '\n' && i < 99) {
+
+    if(ch != '\n' && ch != ' ') {
         message[i] = ch;
         i++;
     }

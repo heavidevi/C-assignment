@@ -63,7 +63,7 @@ int Additem(int products[4][PRODUCT], int cart[][2], int price[]){
         cart[cart_count][0] = code;
         cart[cart_count][1] = quantity;
         
-        // Find product price
+       
         for(int i = 0; i < 4; i++){
             if(products[i][0] == code){
                 price[cart_count] = quantity * products[i][2];
@@ -176,7 +176,7 @@ int menuSystem(int products[4][PRODUCT], char product[][15], int cart[][2], int 
             printf("Invalid choice! Please try again.\n");
     }
     
-    // Recursion - call menuSystem again instead of using loop
+    
     return menuSystem(products, product, cart, cartprice);
 }
 
@@ -194,7 +194,7 @@ int main(){
     
     printf("Welcome to Supermarket Management System!\n");
     
-    // Start the recursive menu system
+
     menuSystem(products, product, cart, cartprice);
     
     printf("System terminated successfully!\n");
