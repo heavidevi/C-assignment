@@ -1,14 +1,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// Global variables to store all books 
+
 int isbns[100];
 char titles[100][50];
 float prices[100];
 int quantities[100];
 int bookCount = 0;
 
-// Function to clear screen
+
 void clearscreen() {
     #ifdef _WIN32
         system("cls");
