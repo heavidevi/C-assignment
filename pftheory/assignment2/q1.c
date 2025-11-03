@@ -17,8 +17,8 @@ void clearscreen() {
 
 void waitForEnter() {
     printf("\nPress Enter to continue...");
-    while(getchar() != '\n'); // Clear input buffer
-    getchar(); // Wait for Enter
+    while(getchar() != '\n'); 
+    getchar(); 
 }
 
 int display(){

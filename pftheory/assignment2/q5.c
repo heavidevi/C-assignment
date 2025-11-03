@@ -15,7 +15,6 @@ void reverse(char str[], int size){
 }
 
 char* encode(char str[], int size){
-   
     reverse(str, size);
     
     for(int i = 0; i < size; i++){
@@ -26,7 +25,6 @@ char* encode(char str[], int size){
 }
 
 char* decode(char str[], int size){
-    
     for(int i = 0; i < size; i++){
         str[i] = bittoggle(str[i]);
     }
@@ -45,21 +43,20 @@ void read_full_message(char message[]) {
     int i = 0;
     char ch;
     
-
-    while((ch = getchar()) == '\n' || ch == ' ') {
+    while((ch = getchar()) == '\n') {
         
     }
+ 
+    if(ch != '\n') {
+        message[i] = ch;
+        i++;
+    }
     
-  
-    if(ch != '\n' && ch != ' ') {
+    while((ch = getchar()) != '\n' && i < 99) {
         message[i] = ch;
         i++;
     }
-
-    if(ch != '\n' && ch != ' ') {
-        message[i] = ch;
-        i++;
-    }
+    
     message[i] = '\0';
 }
 
@@ -70,6 +67,8 @@ int main() {
     int continue_program = 1;
     
     printf("Welcome to TCS Message Security Tool!\n");
+    printf("Press Enter to continue...");
+    getchar();
     
     while(continue_program) {
         clear_screen();
