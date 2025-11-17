@@ -1,0 +1,115 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build debug (raylib)",
+            "type": "cppbuild",
+            "command": "C:\\raylib\\w64devkit\\bin\\gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "-Wall",
+                "-std=c99",
+                "-D_DEFAULT_SOURCE",
+                "-Wno-missing-braces",
+                "-IC:\\raylib\\raylib\\src",
+                "-IC:\\raylib\\raylib\\src\\external",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-LC:\\raylib\\raylib\\src",
+                "-lraylib",
+                "-lopengl32",
+                "-lgdi32",
+                "-lwinmm"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Raylib Debug Build Task"
+        },
+        {
+            "label": "build release (raylib)",
+            "type": "cppbuild",
+            "command": "C:\\raylib\\w64devkit\\bin\\gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-O1",
+                "-s",
+                "-Wall",
+                "-std=c99",
+                "-D_DEFAULT_SOURCE",
+                "-Wno-missing-braces",
+                "-IC:\\raylib\\raylib\\src",
+                "-IC:\\raylib\\raylib\\src\\external",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-LC:\\raylib\\raylib\\src",
+                "-lraylib",
+                "-lopengl32",
+                "-lgdi32",
+                "-lwinmm"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Raylib Release Build Task"
+        },
+        {
+            "label": "build simple C program",
+            "type": "cppbuild",
+            "command": "C:\\Program Files\\CodeBlocks\\MinGW\\bin\\gcc.exe",
+            "args": [
+                "-fdiagnostics-color=always",
+                "-g",
+                "-Wall",
+                "-std=c99",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                "-lm"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Build simple C program without external libraries"
+        },
+        {
+            "label": "build with makefile",
+            "type": "process",
+            "command": "mingw32-make.exe",
+            "args": [
+                "RAYLIB_PATH=${workspaceFolder}/../..",
+                "PROJECT_NAME=${fileBasenameNoExtension}",
+                "OBJS=${fileBasenameNoExtension}.c",
+                "BUILD_MODE=DEBUG"
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "group": "build",
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "detail": "Build using Makefile"
+        }
+    ]
+}
