@@ -57,54 +57,148 @@ int preferance(){
     int screenCenterX = GetScreenWidth() / 2;
     int screenCenterY = GetScreenHeight() / 2;
     
-    // Form dimensions
-    int formWidth = 600;
-    int formHeight = 400;
+    // Balanced form dimensions
+    int formWidth = 1000;
+    int formHeight = 650;
     
     // Centered positions
     int formX = screenCenterX - (formWidth / 2);
     int formY = screenCenterY - (formHeight / 2);
     
-    // Voting panel
-    GuiPanel((Rectangle){ formX, formY, formWidth, formHeight }, "CAST YOUR VOTE");
+    // Draw custom background and title for voting panel
+    DrawRectangle(formX, formY, formWidth, formHeight, (Color){240, 248, 255, 255}); // Light background
+    DrawRectangleLines(formX, formY, formWidth, formHeight, (Color){70, 130, 180, 255}); // Border
     
-    // Instructions
-    GuiLabel((Rectangle){ formX + 20, formY + 40, 560, 24 }, "Select your preferences in order:");
+    // Title bar
+    DrawRectangle(formX, formY, formWidth, 50, (Color){70, 130, 180, 255}); // Title background
+    DrawText("CAST YOUR VOTE", formX + 20, formY + 15, 28, WHITE);
     
-    // 1st Preference
-    GuiLabel((Rectangle){ formX + 20, formY + 70, 120, 24 }, "1st Preference:");
+    // Main instruction with simple clean font
+    DrawText("Select your preferences in order:", formX + 50, formY + 70, 26, (Color){25, 25, 112, 255});
+    
+    // Button dimensions
+    int buttonWidth = 240;
+    int buttonHeight = 70;
+    int buttonSpacing = 280;
+    int startX = formX + 80;
+    
+    // 1st Preference Section with simple font
+    DrawText("1st Choice (Gold):", formX + 50, formY + 110, 24, (Color){25, 25, 112, 255});
+    
     for (int i = 0; i < candidate_count; i++) {
-        if (GuiButton((Rectangle){ formX + 150 + i * 130, formY + 70, 120, 30 }, 
-                      selectedPreferences[0] == i ? TextFormat("[%s]", candidates[i]) : candidates[i])) {
+        Rectangle buttonRect = { startX + i * buttonSpacing, formY + 150, buttonWidth, buttonHeight };
+        
+        // Set button color based on selection
+        if (selectedPreferences[0] == i) {
+            // Selected button - Gold with black text for 1st choice
+            GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){255, 215, 0, 255}));  // Gold
+            GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+            GuiSetStyle(BUTTON, BORDER_WIDTH, 4);
+            GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt((Color){218, 165, 32, 255})); // Goldenrod
+        } else {
+            // Normal button - Light blue
+            GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){173, 216, 230, 255})); // Light Blue
+            GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+            GuiSetStyle(BUTTON, BORDER_WIDTH, 2);
+            GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt((Color){100, 149, 237, 255})); // Cornflower Blue
+        }
+        
+        GuiSetStyle(BUTTON, TEXT_SIZE, 20);
+        if (GuiButton(buttonRect, TextFormat("%s%s", 
+                      selectedPreferences[0] == i ? "* " : "", candidates[i]))) {
             selectedPreferences[0] = i;
         }
     }
     
-    // 2nd Preference
-    GuiLabel((Rectangle){ formX + 20, formY + 110, 120, 24 }, "2nd Preference:");
+    // 2nd Preference Section with simple font
+    DrawText("2nd Choice (Silver):", formX + 50, formY + 250, 24, (Color){25, 25, 112, 255});
+    
     for (int i = 0; i < candidate_count; i++) {
         if (i != selectedPreferences[0]) { // Can't select same as 1st
-            if (GuiButton((Rectangle){ formX + 150 + i * 130, formY + 110, 120, 30 }, 
-                          selectedPreferences[1] == i ? TextFormat("[%s]", candidates[i]) : candidates[i])) {
+            Rectangle buttonRect = { startX + i * buttonSpacing, formY + 290, buttonWidth, buttonHeight };
+            
+            // Set button color based on selection
+            if (selectedPreferences[1] == i) {
+                // Selected button - Silver with black text for 2nd choice
+                GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){192, 192, 192, 255}));  // Silver
+                GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+                GuiSetStyle(BUTTON, BORDER_WIDTH, 4);
+                GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt((Color){169, 169, 169, 255})); // Dark Gray
+            } else {
+                // Normal button - Light Orange
+                GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){255, 218, 185, 255})); // Peach Puff
+                GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+                GuiSetStyle(BUTTON, BORDER_WIDTH, 2);
+                GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt((Color){255, 165, 0, 255})); // Orange
+            }
+            
+            GuiSetStyle(BUTTON, TEXT_SIZE, 20);
+            if (GuiButton(buttonRect, TextFormat("%s%s", 
+                          selectedPreferences[1] == i ? "* " : "", candidates[i]))) {
                 selectedPreferences[1] = i;
             }
+        } else {
+            // Disabled button for already selected candidate
+            Rectangle buttonRect = { startX + i * buttonSpacing, formY + 290, buttonWidth, buttonHeight };
+            GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(LIGHTGRAY));
+            GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(GRAY));
+            GuiSetStyle(BUTTON, BORDER_WIDTH, 1);
+            GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(GRAY));
+            GuiSetStyle(BUTTON, TEXT_SIZE, 18);
+            GuiButton(buttonRect, TextFormat("X %s", candidates[i])); // Non-clickable
         }
     }
     
-    // 3rd Preference
-    GuiLabel((Rectangle){ formX + 20, formY + 150, 120, 24 }, "3rd Preference:");
+    // 3rd Preference Section with simple font
+    DrawText("3rd Choice (Bronze):", formX + 50, formY + 390, 24, (Color){25, 25, 112, 255});
+    
     for (int i = 0; i < candidate_count; i++) {
         if (i != selectedPreferences[0] && i != selectedPreferences[1]) { // Can't select same as 1st or 2nd
-            if (GuiButton((Rectangle){ formX + 150 + i * 130, formY + 150, 120, 30 }, 
-                          selectedPreferences[2] == i ? TextFormat("[%s]", candidates[i]) : candidates[i])) {
+            Rectangle buttonRect = { startX + i * buttonSpacing, formY + 430, buttonWidth, buttonHeight };
+            
+            // Set button color based on selection
+            if (selectedPreferences[2] == i) {
+                // Selected button - Bronze with black text for 3rd choice
+                GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){205, 127, 50, 255}));  // Bronze
+                GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+                GuiSetStyle(BUTTON, BORDER_WIDTH, 4);
+                GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt((Color){160, 82, 45, 255})); // Saddle Brown
+            } else {
+                // Normal button - Light Purple
+                GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){221, 160, 221, 255})); // Plum
+                GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(BLACK));
+                GuiSetStyle(BUTTON, BORDER_WIDTH, 2);
+                GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt((Color){186, 85, 211, 255})); // Medium Orchid
+            }
+            
+            GuiSetStyle(BUTTON, TEXT_SIZE, 20);
+            if (GuiButton(buttonRect, TextFormat("%s%s", 
+                          selectedPreferences[2] == i ? "* " : "", candidates[i]))) {
                 selectedPreferences[2] = i;
             }
+        } else {
+            // Disabled button for already selected candidate
+            Rectangle buttonRect = { startX + i * buttonSpacing, formY + 430, buttonWidth, buttonHeight };
+            GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(LIGHTGRAY));
+            GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(GRAY));
+            GuiSetStyle(BUTTON, BORDER_WIDTH, 1);
+            GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(GRAY));
+            GuiSetStyle(BUTTON, TEXT_SIZE, 18);
+            GuiButton(buttonRect, TextFormat("X %s", candidates[i])); // Non-clickable
         }
     }
     
-    // Submit button (only active if all preferences selected)
+    // Submit button
+    Rectangle submitRect = { formX + 350, formY + 540, 300, 60 };
     if (selectedPreferences[0] != -1 && selectedPreferences[1] != -1 && selectedPreferences[2] != -1) {
-        if (GuiButton((Rectangle){ formX + 200, formY + 200, 120, 40 }, "SUBMIT VOTE")) {
+        // Active submit button - Green
+        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){34, 139, 34, 255})); // Forest Green
+        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(WHITE));
+        GuiSetStyle(BUTTON, BORDER_WIDTH, 3);
+        GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(DARKGREEN));
+        GuiSetStyle(BUTTON, TEXT_SIZE, 24);
+        
+        if (GuiButton(submitRect, "SUBMIT VOTE")) {
             // Record the vote
             record_preferences(selectedPreferences);
             
@@ -115,14 +209,22 @@ int preferance(){
             showLogout = true;
             logoutTimer = 60; // 1 second 
         }
+    } else {
+        // Inactive submit button - Gray
+        GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt(LIGHTGRAY));
+        GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(GRAY));
+        GuiSetStyle(BUTTON, BORDER_WIDTH, 2);
+        GuiSetStyle(BUTTON, BORDER_COLOR_NORMAL, ColorToInt(GRAY));
+        GuiSetStyle(BUTTON, TEXT_SIZE, 20);
+        GuiButton(submitRect, "Complete all choices first"); // Non-clickable
     }
     
-    // Display current selections
-    GuiLabel((Rectangle){ formX + 20, formY + 260, 560, 24 }, 
-             TextFormat("Your choices: 1st: %s, 2nd: %s, 3rd: %s",
+    // Display current selections with simple clean font
+    DrawText(TextFormat("Selections: 1st: %s | 2nd: %s | 3rd: %s",
                        selectedPreferences[0] >= 0 ? candidates[selectedPreferences[0]] : "None",
                        selectedPreferences[1] >= 0 ? candidates[selectedPreferences[1]] : "None",
-                       selectedPreferences[2] >= 0 ? candidates[selectedPreferences[2]] : "None"));
+                       selectedPreferences[2] >= 0 ? candidates[selectedPreferences[2]] : "None"),
+             formX + 50, formY + 520, 20, (Color){70, 70, 70, 255});
     
     return 0;
 }
@@ -403,35 +505,80 @@ int login(){
     int screenCenterX = GetScreenWidth() / 2;
     int screenCenterY = GetScreenHeight() / 2;
     
-    // Form dimensions
-    int formWidth = 500;
-    int formHeight = 250;
-    int inputWidth = 200;
-    int inputHeight = 30;
+    // Enhanced form dimensions for better visibility
+    int formWidth = 800;
+    int formHeight = 450;
+    int inputWidth = 280;
+    int inputHeight = 50;
     
-    // centered
+    // Centered positions
     int formX = screenCenterX - (formWidth / 2);
     int formY = screenCenterY - (formHeight / 2);
     
-    //login
-    GuiPanel((Rectangle){ formX, formY, formWidth, formHeight }, "LOGIN");
+    // Draw custom background for the form area without overlapping panel
+    DrawRectangle(formX, formY, formWidth, formHeight, (Color){240, 248, 255, 255}); // Alice Blue background
+    DrawRectangleLines(formX, formY, formWidth, formHeight, (Color){70, 130, 180, 255}); // Steel Blue border
     
-    // CNIC input (exactly 13 characters)
-    GuiLabel((Rectangle){ formX + 20, formY + 40, 80, 24 }, "CNIC:");
-    if (GuiTextBox((Rectangle){ formX + 100, formY + 40, inputWidth, inputHeight }, cnicText, 14, cnicEditMode))
+    // Draw title manually instead of using GuiPanel to avoid input blocking
+    DrawRectangle(formX, formY, formWidth, 45, (Color){70, 130, 180, 255}); // Slightly taller title bar
+    DrawText("SECURE LOGIN PORTAL", formX + 20, formY + 12, 26, WHITE);
+    
+    // Welcome message with enhanced font styling
+    DrawText("Welcome to Electronic Voting System", formX + 50, formY + 65, 28, (Color){25, 25, 112, 255});
+    DrawText("Please enter your credentials to continue", formX + 50, formY + 100, 22, (Color){70, 70, 70, 255});
+    
+    // CNIC input section with enhanced visibility and better fonts
+    DrawText("CNIC Number:", formX + 50, formY + 150, 24, (Color){25, 25, 112, 255});
+    DrawText("Enter 13 digits without dashes", formX + 50, formY + 175, 20, (Color){100, 100, 100, 255});
+    
+    // Clear any conflicting styles and use minimal textbox styling
+    GuiSetStyle(TEXTBOX, TEXT_SIZE, 0);
+    GuiSetStyle(TEXTBOX, BORDER_WIDTH, 0);
+    GuiSetStyle(TEXTBOX, BORDER_COLOR_NORMAL, 0);
+    GuiSetStyle(TEXTBOX, BASE_COLOR_NORMAL, 0);
+    GuiSetStyle(TEXTBOX, TEXT_COLOR_NORMAL, 0);
+    
+    // CNIC textbox with minimal interference
+    Rectangle cnicRect = { formX + 50, formY + 205, inputWidth, inputHeight };
+    if (GuiTextBox(cnicRect, cnicText, 14, cnicEditMode))
     {
         cnicEditMode = !cnicEditMode;
     }
+    
+    // Draw custom border around CNIC textbox for better visibility
+    if (cnicEditMode) {
+        DrawRectangleLines(cnicRect.x - 2, cnicRect.y - 2, cnicRect.width + 4, cnicRect.height + 4, (Color){30, 144, 255, 255});
+    } else {
+        DrawRectangleLines(cnicRect.x - 1, cnicRect.y - 1, cnicRect.width + 2, cnicRect.height + 2, (Color){70, 130, 180, 255});
+    }
 
-    // Password input (exactly 11 characters)
-    GuiLabel((Rectangle){ formX + 20, formY + 80, 80, 24 }, "PASSWORD:");
-    if (GuiTextBox((Rectangle){ formX + 100, formY + 80, inputWidth, inputHeight }, passwordText, 12, passwordEditMode))
+    // Password input section with enhanced font sizing
+    DrawText("Password:", formX + 420, formY + 150, 24, (Color){25, 25, 112, 255});
+    DrawText("Enter 11 digit password", formX + 420, formY + 175, 20, (Color){100, 100, 100, 255});
+    
+    // Password textbox with same minimal styling
+    Rectangle passwordRect = { formX + 420, formY + 205, inputWidth, inputHeight };
+    if (GuiTextBox(passwordRect, passwordText, 12, passwordEditMode))
     {
         passwordEditMode = !passwordEditMode;
     }
     
-    // Login button
-    if (GuiButton((Rectangle){ formX + 100, formY + 120, 100, 30 }, "LOGIN"))
+    // Draw custom border around Password textbox for better visibility
+    if (passwordEditMode) {
+        DrawRectangleLines(passwordRect.x - 2, passwordRect.y - 2, passwordRect.width + 4, passwordRect.height + 4, (Color){30, 144, 255, 255});
+    } else {
+        DrawRectangleLines(passwordRect.x - 1, passwordRect.y - 1, passwordRect.width + 2, passwordRect.height + 2, (Color){70, 130, 180, 255});
+    }
+    
+    // Enhanced Login button with proper styling
+    Rectangle loginButtonRect = { formX + 320, formY + 280, 160, 55 };
+    
+    // Set button styles only when needed
+    GuiSetStyle(BUTTON, BASE_COLOR_NORMAL, ColorToInt((Color){70, 130, 180, 255}));
+    GuiSetStyle(BUTTON, TEXT_COLOR_NORMAL, ColorToInt(WHITE));
+    GuiSetStyle(BUTTON, TEXT_SIZE, 20);
+    
+    if (GuiButton(loginButtonRect, "LOGIN"))
     {
         loginClicked = true;  
         
@@ -455,13 +602,13 @@ int login(){
         }
     }
     
-    // Display error messages
+    // Enhanced error messages using DrawText to avoid GUI style conflicts
     if (loginClicked && !loginSuccessful)
     {
         if (hasAlreadyVoted(cnicText)) {
-            GuiLabel((Rectangle){  formX + 20, formY + 160, 460, 30}, "ERROR: You have already voted!");
+            DrawText("ERROR: You have already voted!", formX + 50, formY + 350, 20, (Color){220, 20, 60, 255});
         } else {
-            GuiLabel((Rectangle){  formX + 20, formY + 160, 460, 30}, "Login failed! Check your credentials");
+            DrawText("Login failed! Please check your credentials", formX + 50, formY + 350, 20, (Color){220, 20, 60, 255});
         }
     }
     
@@ -479,6 +626,41 @@ int main()
     ToggleFullscreen();  
     SetTargetFPS(60);
     
+    // Load better fonts with enhanced quality - try multiple font options
+    Font customFont = {0};
+    
+    // Try loading fonts in order of preference with better quality settings
+    customFont = LoadFontEx("C:/Windows/Fonts/segoeui.ttf", 32, 0, 250);     // Segoe UI - modern Windows font
+    if (customFont.texture.id == 0) {
+        customFont = LoadFontEx("C:/Windows/Fonts/calibri.ttf", 32, 0, 250);   // Calibri - clean modern font
+    }
+    if (customFont.texture.id == 0) {
+        customFont = LoadFontEx("C:/Windows/Fonts/arial.ttf", 32, 0, 250);     // Arial fallback
+    }
+    if (customFont.texture.id == 0) {
+        customFont = LoadFontEx("C:/Windows/Fonts/tahoma.ttf", 32, 0, 250);    // Tahoma - very clean
+    }
+    
+    // Apply enhanced font if successfully loaded
+    if (customFont.texture.id != 0) {
+        GuiSetFont(customFont);
+        // Set smooth text rendering
+        SetTextureFilter(customFont.texture, TEXTURE_FILTER_BILINEAR);
+    }
+    
+    // Set global GUI style for better appearance and consistency
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 22);                    // Slightly larger for better readability
+    GuiSetStyle(DEFAULT, BORDER_WIDTH, 1);
+    GuiSetStyle(DEFAULT, TEXT_ALIGNMENT, TEXT_ALIGN_LEFT);
+    GuiSetStyle(DEFAULT, TEXT_SPACING, 2);                  // Better character spacing
+    GuiSetStyle(BUTTON, BORDER_WIDTH, 2);
+    GuiSetStyle(BUTTON, TEXT_SIZE, 20);                     // Consistent button text size
+    GuiSetStyle(TEXTBOX, BORDER_WIDTH, 2);
+    GuiSetStyle(TEXTBOX, TEXT_SIZE, 20);                    // Good textbox text size
+    
+    // Set enhanced text rendering for better quality
+    SetTextLineSpacing(26);                                 // Better line spacing
+    
     SetTargetFPS(60); 
 
     while (!WindowShouldClose())
@@ -487,13 +669,32 @@ int main()
             ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
 
             if (showLogout) {
-                // Show logout message and countdown
+                // Enhanced logout message and countdown
                 int centerX = GetScreenWidth() / 2;
                 int centerY = GetScreenHeight() / 2;
                 
-                GuiPanel((Rectangle){ centerX - 200, centerY - 50, 400, 100 }, "VOTE SUBMITTED");
-                GuiLabel((Rectangle){ centerX - 180, centerY - 20, 360, 24 }, 
-                         TextFormat("Thank you for voting! Logging out in %.1f seconds...", logoutTimer / 60.0f));
+                // Draw success panel with clean background
+                DrawRectangle(centerX - 300, centerY - 80, 600, 160, (Color){240, 248, 255, 255});
+                DrawRectangleLines(centerX - 300, centerY - 80, 600, 160, (Color){70, 130, 180, 255});
+                
+                // Title bar for success message
+                DrawRectangle(centerX - 300, centerY - 80, 600, 40, (Color){34, 139, 34, 255}); // Green background
+                DrawText("VOTE SUBMITTED SUCCESSFULLY", centerX - 280, centerY - 65, 24, WHITE);
+                
+                // Thank you message with simple font
+                DrawText("Thank you for participating in the democratic process!", 
+                         centerX - 280, centerY - 30, 22, (Color){25, 25, 112, 255});
+                
+                // Countdown message with simple styling
+                DrawText(TextFormat("Automatically logging out in %.1f seconds...", logoutTimer / 60.0f),
+                         centerX - 280, centerY - 5, 20, (Color){70, 70, 70, 255});
+                
+                // Progress bar for countdown
+                float progress = (60.0f - logoutTimer) / 60.0f;
+                Rectangle progressRect = { centerX - 200, centerY + 25, 400, 20 };
+                DrawRectangle(progressRect.x, progressRect.y, progressRect.width, progressRect.height, LIGHTGRAY);
+                DrawRectangle(progressRect.x, progressRect.y, progressRect.width * progress, progressRect.height, GREEN);
+                DrawRectangleLines(progressRect.x, progressRect.y, progressRect.width, progressRect.height, DARKGREEN);
                 
                 logoutTimer--;
                 if (logoutTimer <= 0) {
